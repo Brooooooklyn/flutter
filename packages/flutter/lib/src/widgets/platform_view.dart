@@ -71,10 +71,10 @@ class AndroidView extends StatefulWidget {
     this.gestureRecognizers,
     this.creationParams,
     this.creationParamsCodec,
-  }) : assert(viewType != null),
-       assert(hitTestBehavior != null),
-       assert(creationParams == null || creationParamsCodec != null),
-       super(key: key);
+  })  : assert(viewType != null),
+        assert(hitTestBehavior != null),
+        assert(creationParams == null || creationParamsCodec != null),
+        super(key: key);
 
   /// The unique identifier for Android view type to be embedded by this widget.
   ///
@@ -216,10 +216,10 @@ class UiKitView extends StatefulWidget {
     this.creationParams,
     this.creationParamsCodec,
     this.gestureRecognizers,
-  }) : assert(viewType != null),
-       assert(hitTestBehavior != null),
-       assert(creationParams == null || creationParamsCodec != null),
-       super(key: key);
+  })  : assert(viewType != null),
+        assert(hitTestBehavior != null),
+        assert(creationParams == null || creationParamsCodec != null),
+        super(key: key);
 
   // TODO(amirh): reference the iOS API doc once available.
   /// The unique identifier for iOS view type to be embedded by this widget.
@@ -304,7 +304,7 @@ class _AndroidViewState extends State<AndroidView> {
   FocusNode _focusNode;
 
   static final Set<Factory<OneSequenceGestureRecognizer>> _emptyRecognizersSet =
-    <Factory<OneSequenceGestureRecognizer>>{};
+      <Factory<OneSequenceGestureRecognizer>>{};
 
   @override
   Widget build(BuildContext context) {
@@ -332,7 +332,8 @@ class _AndroidViewState extends State<AndroidView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final TextDirection newLayoutDirection = _findLayoutDirection();
-    final bool didChangeLayoutDirection = _layoutDirection != newLayoutDirection;
+    final bool didChangeLayoutDirection =
+        _layoutDirection != newLayoutDirection;
     _layoutDirection = newLayoutDirection;
 
     _initializeOnce();
@@ -348,7 +349,8 @@ class _AndroidViewState extends State<AndroidView> {
     super.didUpdateWidget(oldWidget);
 
     final TextDirection newLayoutDirection = _findLayoutDirection();
-    final bool didChangeLayoutDirection = _layoutDirection != newLayoutDirection;
+    final bool didChangeLayoutDirection =
+        _layoutDirection != newLayoutDirection;
     _layoutDirection = newLayoutDirection;
 
     if (widget.viewType != oldWidget.viewType) {
@@ -363,7 +365,8 @@ class _AndroidViewState extends State<AndroidView> {
   }
 
   TextDirection _findLayoutDirection() {
-    assert(widget.layoutDirection != null || debugCheckHasDirectionality(context));
+    assert(
+        widget.layoutDirection != null || debugCheckHasDirectionality(context));
     return widget.layoutDirection ?? Directionality.of(context);
   }
 
@@ -376,17 +379,17 @@ class _AndroidViewState extends State<AndroidView> {
   void _createNewAndroidView() {
     _id = platformViewsRegistry.getNextPlatformViewId();
     _controller = PlatformViewsService.initAndroidView(
-      id: _id,
-      viewType: widget.viewType,
-      layoutDirection: _layoutDirection,
-      creationParams: widget.creationParams,
-      creationParamsCodec: widget.creationParamsCodec,
-      onFocus: () {
-        _focusNode.requestFocus();
-      }
-    );
+        id: _id,
+        viewType: widget.viewType,
+        layoutDirection: _layoutDirection,
+        creationParams: widget.creationParams,
+        creationParamsCodec: widget.creationParamsCodec,
+        onFocus: () {
+          _focusNode.requestFocus();
+        });
     if (widget.onPlatformViewCreated != null) {
-      _controller.addOnPlatformViewCreatedListener(widget.onPlatformViewCreated);
+      _controller
+          .addOnPlatformViewCreatedListener(widget.onPlatformViewCreated);
     }
   }
 
@@ -396,22 +399,24 @@ class _AndroidViewState extends State<AndroidView> {
     }
     if (!isFocused) {
       _controller.clearFocus().catchError((dynamic e) {
-       if (e is MissingPluginException) {
-         // We land the framework part of Android platform views keyboard
-         // support before the engine part. There will be a commit range where
-         // clearFocus isn't implemented in the engine. When that happens we
-         // just swallow the error here. Once the engine part is rolled to the
-         // framework I'll remove this.
-         // TODO(amirh): remove this once the engine's clearFocus is rolled.
-         return;
-       }
+        if (e is MissingPluginException) {
+          // We land the framework part of Android platform views keyboard
+          // support before the engine part. There will be a commit range where
+          // clearFocus isn't implemented in the engine. When that happens we
+          // just swallow the error here. Once the engine part is rolled to the
+          // framework I'll remove this.
+          // TODO(amirh): remove this once the engine's clearFocus is rolled.
+          return;
+        }
       });
       return;
     }
-    SystemChannels.textInput.invokeMethod<void>(
+    SystemChannels.textInput
+        .invokeMethod<void>(
       'TextInput.setPlatformViewClient',
       _id,
-    ).catchError((dynamic e) {
+    )
+        .catchError((dynamic e) {
       if (e is MissingPluginException) {
         // We land the framework part of Android platform views keyboard
         // support before the engine part. There will be a commit range where
@@ -431,7 +436,7 @@ class _UiKitViewState extends State<UiKitView> {
   bool _initialized = false;
 
   static final Set<Factory<OneSequenceGestureRecognizer>> _emptyRecognizersSet =
-    <Factory<OneSequenceGestureRecognizer>>{};
+      <Factory<OneSequenceGestureRecognizer>>{};
 
   @override
   Widget build(BuildContext context) {
@@ -457,7 +462,8 @@ class _UiKitViewState extends State<UiKitView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final TextDirection newLayoutDirection = _findLayoutDirection();
-    final bool didChangeLayoutDirection = _layoutDirection != newLayoutDirection;
+    final bool didChangeLayoutDirection =
+        _layoutDirection != newLayoutDirection;
     _layoutDirection = newLayoutDirection;
 
     _initializeOnce();
@@ -473,7 +479,8 @@ class _UiKitViewState extends State<UiKitView> {
     super.didUpdateWidget(oldWidget);
 
     final TextDirection newLayoutDirection = _findLayoutDirection();
-    final bool didChangeLayoutDirection = _layoutDirection != newLayoutDirection;
+    final bool didChangeLayoutDirection =
+        _layoutDirection != newLayoutDirection;
     _layoutDirection = newLayoutDirection;
 
     if (widget.viewType != oldWidget.viewType) {
@@ -488,7 +495,8 @@ class _UiKitViewState extends State<UiKitView> {
   }
 
   TextDirection _findLayoutDirection() {
-    assert(widget.layoutDirection != null || debugCheckHasDirectionality(context));
+    assert(
+        widget.layoutDirection != null || debugCheckHasDirectionality(context));
     return widget.layoutDirection ?? Directionality.of(context);
   }
 
@@ -500,7 +508,8 @@ class _UiKitViewState extends State<UiKitView> {
 
   Future<void> _createNewUiKitView() async {
     final int id = platformViewsRegistry.getNextPlatformViewId();
-    final UiKitViewController controller = await PlatformViewsService.initUiKitView(
+    final UiKitViewController controller =
+        await PlatformViewsService.initUiKitView(
       id: id,
       viewType: widget.viewType,
       layoutDirection: _layoutDirection,
@@ -514,7 +523,9 @@ class _UiKitViewState extends State<UiKitView> {
     if (widget.onPlatformViewCreated != null) {
       widget.onPlatformViewCreated(id);
     }
-    setState(() { _controller = controller; });
+    setState(() {
+      _controller = controller;
+    });
   }
 }
 
@@ -524,25 +535,25 @@ class _AndroidPlatformView extends LeafRenderObjectWidget {
     @required this.controller,
     @required this.hitTestBehavior,
     @required this.gestureRecognizers,
-  }) : assert(controller != null),
-       assert(hitTestBehavior != null),
-       assert(gestureRecognizers != null),
-       super(key: key);
+  })  : assert(controller != null),
+        assert(hitTestBehavior != null),
+        assert(gestureRecognizers != null),
+        super(key: key);
 
   final AndroidViewController controller;
   final PlatformViewHitTestBehavior hitTestBehavior;
   final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
 
   @override
-  RenderObject createRenderObject(BuildContext context) =>
-      RenderAndroidView(
+  RenderObject createRenderObject(BuildContext context) => RenderAndroidView(
         viewController: controller,
         hitTestBehavior: hitTestBehavior,
         gestureRecognizers: gestureRecognizers,
       );
 
   @override
-  void updateRenderObject(BuildContext context, RenderAndroidView renderObject) {
+  void updateRenderObject(
+      BuildContext context, RenderAndroidView renderObject) {
     renderObject.viewController = controller;
     renderObject.hitTestBehavior = hitTestBehavior;
     renderObject.updateGestureRecognizers(gestureRecognizers);
@@ -555,10 +566,10 @@ class _UiKitPlatformView extends LeafRenderObjectWidget {
     @required this.controller,
     @required this.hitTestBehavior,
     @required this.gestureRecognizers,
-  }) : assert(controller != null),
-       assert(hitTestBehavior != null),
-       assert(gestureRecognizers != null),
-       super(key: key);
+  })  : assert(controller != null),
+        assert(hitTestBehavior != null),
+        assert(gestureRecognizers != null),
+        super(key: key);
 
   final UiKitViewController controller;
   final PlatformViewHitTestBehavior hitTestBehavior;
@@ -585,12 +596,10 @@ class _UiKitPlatformView extends LeafRenderObjectWidget {
 ///
 /// See also [CreatePlatformViewCallback] which uses this object to create a [PlatformViewController].
 class PlatformViewCreationParams {
-
-  const PlatformViewCreationParams._({
-    @required this.id,
-    @required this.onPlatformViewCreated
-  }) : assert(id != null),
-       assert(onPlatformViewCreated != null);
+  const PlatformViewCreationParams._(
+      {@required this.id, @required this.onPlatformViewCreated})
+      : assert(id != null),
+        assert(onPlatformViewCreated != null);
 
   /// The unique identifier for the new platform view.
   ///
@@ -607,7 +616,8 @@ class PlatformViewCreationParams {
 ///
 /// See also:
 /// * [PlatformViewSurface], a common widget for presenting platform views.
-typedef PlatformViewSurfaceFactory = Widget Function(BuildContext context, PlatformViewController controller);
+typedef PlatformViewSurfaceFactory = Widget Function(
+    BuildContext context, PlatformViewController controller);
 
 /// Constructs a [PlatformViewController].
 ///
@@ -615,7 +625,8 @@ typedef PlatformViewSurfaceFactory = Widget Function(BuildContext context, Platf
 /// params [PlatformViewCreationParams.id] field.
 ///
 /// See also [PlatformViewLink.onCreate].
-typedef CreatePlatformViewCallback = PlatformViewController Function(PlatformViewCreationParams params);
+typedef CreatePlatformViewCallback = PlatformViewController Function(
+    PlatformViewCreationParams params);
 
 /// Links a platform view with the Flutter framework.
 ///
@@ -647,7 +658,6 @@ typedef CreatePlatformViewCallback = PlatformViewController Function(PlatformVie
 /// The `surfaceFactory` and the `onCreatePlatformView` only take affect when the state of this widget is initialized.
 /// If the widget is rebuilt without losing its state, `surfaceFactory` and `onCreatePlatformView` are ignored.
 class PlatformViewLink extends StatefulWidget {
-
   /// Construct a [PlatformViewLink] widget.
   ///
   /// The `surfaceFactory` and the `onCreatePlatformView` must not be null.
@@ -659,12 +669,11 @@ class PlatformViewLink extends StatefulWidget {
     Key key,
     @required PlatformViewSurfaceFactory surfaceFactory,
     @required CreatePlatformViewCallback onCreatePlatformView,
-    }) : assert(surfaceFactory != null),
-                                  assert(onCreatePlatformView != null),
-                                  _surfaceFactory = surfaceFactory,
-                                  _onCreatePlatformView = onCreatePlatformView,
-                                  super(key: key);
-
+  })  : assert(surfaceFactory != null),
+        assert(onCreatePlatformView != null),
+        _surfaceFactory = surfaceFactory,
+        _onCreatePlatformView = onCreatePlatformView,
+        super(key: key);
 
   final PlatformViewSurfaceFactory _surfaceFactory;
   final CreatePlatformViewCallback _onCreatePlatformView;
@@ -674,7 +683,6 @@ class PlatformViewLink extends StatefulWidget {
 }
 
 class _PlatformViewLinkState extends State<PlatformViewLink> {
-
   int _id;
   PlatformViewController _controller;
   bool _platformViewCreated = false;
@@ -697,7 +705,8 @@ class _PlatformViewLinkState extends State<PlatformViewLink> {
 
   void _initialize() {
     _id = platformViewsRegistry.getNextPlatformViewId();
-    _controller = widget._onCreatePlatformView(PlatformViewCreationParams._(id:_id, onPlatformViewCreated:_onPlatformViewCreated));
+    _controller = widget._onCreatePlatformView(PlatformViewCreationParams._(
+        id: _id, onPlatformViewCreated: _onPlatformViewCreated));
   }
 
   void _onPlatformViewCreated(int id) {
@@ -727,7 +736,6 @@ class _PlatformViewLinkState extends State<PlatformViewLink> {
 /// * [UIKitView] which embeds an iOS platform view in the widget hierarchy.
 // TODO(amirh): Link to the embedder's system compositor documentation once available.
 class PlatformViewSurface extends LeafRenderObjectWidget {
-
   /// Construct a `PlatformViewSurface`.
   ///
   /// The [controller] must not be null.
@@ -735,9 +743,9 @@ class PlatformViewSurface extends LeafRenderObjectWidget {
     @required this.controller,
     @required this.hitTestBehavior,
     @required this.gestureRecognizers,
-  }) : assert(controller != null),
-       assert(hitTestBehavior != null),
-       assert(gestureRecognizers != null);
+  })  : assert(controller != null),
+        assert(hitTestBehavior != null),
+        assert(gestureRecognizers != null);
 
   /// The controller for the platform view integrated by this [PlatformViewSurface].
   ///
@@ -791,11 +799,15 @@ class PlatformViewSurface extends LeafRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return PlatformViewRenderBox(controller: controller, gestureRecognizers: gestureRecognizers, hitTestBehavior: hitTestBehavior);
+    return PlatformViewRenderBox(
+        controller: controller,
+        gestureRecognizers: gestureRecognizers,
+        hitTestBehavior: hitTestBehavior);
   }
 
   @override
-  void updateRenderObject(BuildContext context, PlatformViewRenderBox renderObject) {
+  void updateRenderObject(
+      BuildContext context, PlatformViewRenderBox renderObject) {
     renderObject
       ..controller = controller
       ..hitTestBehavior = hitTestBehavior
